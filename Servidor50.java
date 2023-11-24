@@ -1,6 +1,4 @@
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -95,10 +93,10 @@ public class Servidor50 {
 
                 if (!shaEncontrado) {
 
-                     for( int i =1; i<=2;i++) {
+                     /*for( int i =1; i<=2;i++) {
                          mTcpServer.pararClientes(i);
 
-                     }
+                     }*/
 
                 }
                 System.out.println("Minero: "+arrString[3]);
@@ -109,7 +107,7 @@ public class Servidor50 {
                 System.out.println("Verificado: "+ arrString[8]);
                 contador++;
 
-                if(contador<palabras.size()) mTcpServer.sendMessageTCPServerRango(palabras.get(contador),dificultad , false,true);
+                /*if(contador<palabras.size()) mTcpServer.sendMessageTCPServerRango(palabras.get(contador),dificultad , false,true);
 
                 if(contador==palabras.size()){
                     for( int i =1; i<=2;i++) {
@@ -117,7 +115,7 @@ public class Servidor50 {
 
                     }
                 }
-
+*/
             }
     }
 
@@ -133,9 +131,9 @@ public class Servidor50 {
                 String[] arrayString = envia.split("\\s+");
                 dificultad = Integer.parseInt(arrayString[1]);
                 boolean shaEncontrado = this.shaEncontrado;
-                if (mTcpServer != null) {
+                /*if (mTcpServer != null) {
                     mTcpServer.sendMessageTCPServerRango(palabras.get(contador), dificultad, shaEncontrado);
-                }
+                }*/
 
             } else {
                 System.out.println("NO TIENE ENVIO!!!");
