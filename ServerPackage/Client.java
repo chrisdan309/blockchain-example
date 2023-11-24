@@ -15,14 +15,14 @@ public class Client {
         Random random = new Random();
         while(numberOfQuerys > 0){
             double randomQuery = Math.random();
-            int randomIDSend = random.nextInt(Server.clients.size());
+            int randomIDSend = 1 + random.nextInt(Server.clients.size());
             if(randomQuery < 0.6) {
                 querys.add("L-" + randomIDSend);
             }
             else{
-                int randomIDReceive = random.nextInt(Server.clients.size());
+                int randomIDReceive = 1 + random.nextInt(Server.clients.size());
                 while(randomIDSend == randomIDReceive){
-                    randomIDReceive = random.nextInt(Server.clients.size());
+                    randomIDReceive = 1 + random.nextInt(Server.clients.size());
                 }
                 double mount = random.nextDouble() * 1000;
                 mount = Math.round(mount * 100.0) / 100.0;

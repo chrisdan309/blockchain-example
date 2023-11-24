@@ -199,6 +199,24 @@ public class TCPServer {
 
 
         // Actualizar el txt
+        String fileName = "Archivos/cuentas.txt";
+        List<String> lines = readFileContent(fileName);
+
+        for (int i = 0; i < lines.size(); i++) {
+            String[] partsLine = lines.get(i).split(":");
+            int accountID = Integer.parseInt(partsLine[0]);
+            if (accountID == idAccountSend) {
+                double mount = Double.parseDouble(partsLine[1]);
+                mount -= mountToTransfer;
+                lines.set(i, accountID + ": " + mount);
+            }
+            else if (accountID == idAccountReceive) {
+                double mount = Double.parseDouble(partsLine[1]);
+                mount += mountToTransfer;
+                lines.set(i, accountID + ": " + mount);
+            }
+        }
+        writeFileContent(fileName, lines);
 
 
 
@@ -223,6 +241,37 @@ public class TCPServer {
         return true;
     }
 
+    private List<String> readFileContent(String fileName) {
+        List<String> lines = new ArrayList<>();
+        try {
+            FileReader fr = new FileReader(fileName);
+            BufferedReader br = new BufferedReader(fr);
+            String line;
+
+            while((line = br.readLine()) != null) {
+                lines.add(line);
+            }
+
+            fr.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return lines;
+    }
+
+    private void writeFileContent(String fileName, List<String> lines) {
+        try {
+            FileWriter fw = new FileWriter(fileName);
+            BufferedWriter bw = new BufferedWriter(fw);
+            for (String line : lines) {
+                bw.write(line);
+                bw.newLine();
+            }
+            bw.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public void run() {
         System.out.println(SERVER_PORT);

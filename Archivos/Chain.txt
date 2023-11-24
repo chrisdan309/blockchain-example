@@ -1,0 +1,12 @@
+Hash:0006a5ca4de0c9f2107b3fc11de04221d75d7bd9
++previousHash:0006a5ca4de0c9f2107b3fc11de04221d75d7bd1
++timestamp:1530674585
++merkleRoot:0006a5ca4de0c9f2107b3fc11de04221d75d7bd9
++nonce:0
+{
+
+}
+
+
+
+
