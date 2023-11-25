@@ -80,50 +80,6 @@ class Nodo {
 
         sendToClient("Recibe-"+nodeID+":"+newBlock.blockHash+":"+newBlock.timeExecution+":"+newBlock.merkleRoot);
 
-
-
-
-        /*
-        String[] parts = input.split("/");nonce
-        String vectorMessage = parts[0];
-        String centroidMessage = parts[1];
-
-        // separar vectorMessage y almacenar en un arreglo de point
-        String[] vectorParts = vectorMessage.split(" ");
-        Point[] points = separarPuntos(vectorParts);
-
-        String[] centroidParts = centroidMessage.split(" ");
-        Point[] centroids = separarPuntos(centroidParts);
-        for (Point point : points) {
-            System.out.println(point);
-        }
-
-        for (Point centroid : centroids) {
-            System.out.println(centroid);
-        }
-        process(points, centroids);*/
-
-
-        
-        /*
-        String[] parts = input.split("/");
-        String vectorMessage = parts[0];
-        String centroidMessage = parts[1];
-
-        // separar vectorMessage y almacenar en un arreglo de point
-        String[] vectorParts = vectorMessage.split(" ");
-        Point[] points = separarPuntos(vectorParts);
-
-        String[] centroidParts = centroidMessage.split(" ");
-        Point[] centroids = separarPuntos(centroidParts);
-        for (Point point : points) {
-            System.out.println(point);
-        }
-
-        for (Point centroid : centroids) {
-            System.out.println(centroid);
-        }
-        process(points, centroids);*/
     }
 
 
@@ -134,22 +90,4 @@ class Nodo {
         }
     }
 
-/*    void process(Point[] points, Point[] centroids) {
-        KMeansAlgorithm kMeansAlgorithm = new KMeansAlgorithm(points, centroids);
-        kMeansAlgorithm.asignarPuntos();
-        kMeansAlgorithm.actualizarCentroides();
-
-        String message = "Resultado vector ";
-        for (Point point : points) {
-            message += point.name + "(" + point.x + "," + point.y + ")-" + point.cluster + ", ";
-        }
-        message += "/Resultado centroide ";
-        for (Point centroid : centroids) {
-            message += centroid.name + "(" + centroid.x + "," + centroid.y + ")-" + centroid.puntos + ", ";
-        }
-
-        System.out.println(message);
-        System.out.println("-----------------------------------------");
-        sendToClient(message);
-    }*/
 }

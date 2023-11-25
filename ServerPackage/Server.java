@@ -7,7 +7,7 @@ import java.util.Scanner;
 
 public class Server {
     private TCPServer tcpServer;
-    public int clientCount = 0;
+    public int clientCount;
     public static ArrayList<Client> clients;
     public static int numberQuery;
     public static void main(String[] args) {
@@ -48,11 +48,6 @@ public class Server {
         System.out.print("1. Generar transacciones (v): Escribir Generar-v\n");
         System.out.println("2. Salir");
 
-        /*try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         String fileName = "Archivos/cuentas.txt";
         try{
             FileWriter fileWriter = new FileWriter(fileName);
@@ -73,8 +68,6 @@ public class Server {
         }
         */
 
-
-
         listening();
 
         tcpServer.stopServer();
@@ -82,11 +75,6 @@ public class Server {
 
     }
 
-    String[] clientResponses = new String[20];
-    boolean isVector = false;
-    boolean isCentroide = false;
-    String vectorMessage = "";
-    String centroideMessage = "";
     boolean firstResult = true;
     int cont = 0;
 
@@ -111,19 +99,9 @@ public class Server {
                 firstResult = true;
                 cont = 0;
                 System.out.println("Puede continuar");
-                return;
             }
-            return;
-
-
-
-
         }
-
-
-
     }
-
 
     // Envia los mensajes a los cliente
     void sendToServer(String message) {

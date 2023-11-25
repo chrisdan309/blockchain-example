@@ -25,8 +25,6 @@ public class TCPServer {
     }
 
     boolean toMaster = false;
-    String centroidMessage = "";
-    String vectorMessage = "";
     public void sendMessageToTCPServer(String message) {
         if(message.contains("Generar")) {
             generateQuerys = true;
@@ -147,56 +145,6 @@ public class TCPServer {
 
 
         }
-
-        // clientCount = 6;
-        /*if (clientCount == 0) {
-            System.out.println("No hay clientes conectados");
-            System.exit(0);
-        }
-        String[] parts = message.split("/");
-        vectorMessage = parts[0];
-        centroidMessage = parts[1];
-        String[] partesVector = vectorMessage.split(" ");
-        int contadorVectores = 0;
-        for (String parte : partesVector) {
-            if (parte.contains("(")) {
-                contadorVectores++;
-            }
-        }
-
-        int elementosPorParte = contadorVectores / clientCount;
-        int elementosExtras = contadorVectores % clientCount;
-
-        int indice = 1;
-        // Repartición de vectores
-        for (int parte = 1; parte <= clientCount; parte++) {
-            System.out.print("Enviado al cliente " + parte + ": ");
-            int elementosEnEstaParte = elementosPorParte;
-
-            if (elementosExtras > 0) {
-                elementosEnEstaParte++;
-                elementosExtras--;
-            }
-            StringBuilder cadenaConPuntos = new StringBuilder("enviar vector ");
-            for (int i = 0; i < elementosEnEstaParte; i++) {
-                if (indice <= contadorVectores) {
-                    String aux = "a" + indice + "(";
-                    for (String cad : partesVector) {
-                        if (cad.contains(aux)) {
-                            cadenaConPuntos.append(cad).append(" ");
-                        }
-                    }
-                    // Ingresa cada punto del vector
-                    indice++;
-                }
-            }
-            String cadenaAEnviar = cadenaConPuntos.append("/").append(centroidMessage).toString();
-            System.out.print(cadenaAEnviar);
-            connectedClients[parte].sendMessage(message);
-            System.out.println();
-        }
-
-         */
     }
 
     private boolean isValid(String query){
@@ -268,27 +216,6 @@ public class TCPServer {
             }
         }
         writeFileContent(fileName, lines);
-
-
-
-        /*String fileName = "Archivos/cuentas.txt";
-        try{
-
-            FileReader fr = new FileReader(fileName);
-            BufferedReader br = new BufferedReader(fr);
-            String line;
-
-            while((line = br.readLine()) != null) {
-                int accountAux = Integer.parseInt(line.split(":")[0]);
-                if (accountID == accountAux) {
-                    mount = Double.parseDouble(line.split(":")[1]);
-                }
-            }
-
-            fr.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
         return true;
     }
 
