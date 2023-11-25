@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Server {
-
     private TCPServer tcpServer;
     public int clientCount = 0;
     public static ArrayList<Client> clients;
@@ -88,51 +87,57 @@ public class Server {
     boolean isCentroide = false;
     String vectorMessage = "";
     String centroideMessage = "";
+    boolean firstResult = true;
+    int cont = 0;
 
     // Recibe los mensajes de los clientes (Final)
     void receiveFromServer(String message) {
+
         if (message != null && !message.isEmpty()) {
-            // Sumar la cantidad de cluster 1, 2, 3, etc
-            // Update centroides
-            // Si diferencia entre centroides es menor a 0.1, detener el programa
-            // Sino, enviar mensaje a los clientes
-
             System.out.println("Mensaje recibido: " + message);
-
-            String[] parts = message.split("/");
-            String vectorMessage = parts[0];
-            String centroidMessage = parts[1];
-            String[] partesCentroides = centroidMessage.split(" ");
-            int contadorCentroides = 0;
-            for (String parte : partesCentroides) {
-                if (parte.contains("(")) {
-                    contadorCentroides++;
-                }
+            if (firstResult && message.contains("Recibe")) {
+                firstResult = false;
+                cont++;
+                System.out.println("PRimer if");
+                message = "Master Node-" + message;
+                sendToServer(message);
+                return;
+                // Cierra canal
             }
-            if (message.trim().contains("Resultado")) {
-
-                // Update Centroides
-                clientResponses[clientCount] = message;
-                clientCount++;
-
-                // Llegaron todos los mensajes
-                if (clientCount == this.tcpServer.nodeCount) {
-                    return;
-                }else {
-                    return;
-                }
+            cont++;
+            System.out.println("Contador : "+ cont);
+            if(cont == TCPServer.nodeCount){
+                System.out.println("Segundo if");
+                firstResult = true;
+                cont = 0;
+                System.out.println("Puede continuar");
+                return;
             }
+            return;
+
+
+
+
         }
+
+
+
     }
 
 
     // Envia los mensajes a los cliente
     void sendToServer(String message) {
+        System.out.println("Entra sendToServer");
         if (message != null) {
             if (message.trim().contains("Generar")) {
                 // Enviar mensaje a los clientes
+                System.out.println("Enviando querys");
                 tcpServer.sendMessageToTCPServer(message);
-            } else {
+            } else if (message.trim().contains("Master Node")){
+                System.out.println("Enviando al nodo maestro");
+                tcpServer.sendMessageToTCPServer(message);
+            }
+            else {
                 System.out.println("El mensaje no contiene la palabra 'enviar'");
             }
         }
@@ -141,7 +146,6 @@ public class Server {
     void listening() {
         Scanner scanner = new Scanner(System.in);
         String command;
-
 
         do {
             command = scanner.nextLine();

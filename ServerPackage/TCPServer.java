@@ -12,10 +12,10 @@ import static ServerPackage.Server.numberQuery;
 
 public class TCPServer {
 
-    protected int nodeCount = 0;
+    public static int nodeCount = 0;
     public static final int SERVER_PORT = CONSTANTS.PORT;
     private final OnMessageReceived messageListener;
-    private final TCPServerThread[] connectecNodes = new TCPServerThread[10];
+    public static final TCPServerThread[] connectedNodes = new TCPServerThread[10];
     private boolean generateQuerys = false;
     public TCPServer(OnMessageReceived messageListener) {
         this.messageListener = messageListener;
@@ -24,6 +24,7 @@ public class TCPServer {
         return this.messageListener;
     }
 
+    boolean toMaster = false;
     String centroidMessage = "";
     String vectorMessage = "";
     public void sendMessageToTCPServer(String message) {
@@ -31,8 +32,13 @@ public class TCPServer {
             generateQuerys = true;
         }
 
+        if(message.contains("Master Node")){
+            toMaster = true;
+        }
+
 
         if(generateQuerys) {
+            generateQuerys = false;
             int v = Integer.parseInt(message.split("-")[1]);
             List<Thread> clientThreads = new ArrayList<>();
 
@@ -74,14 +80,6 @@ public class TCPServer {
                 throw new RuntimeException(e);
             }
 
-
-            /*for (Client c : clients) {
-                for (String query : c.querys) {
-                    System.out.println(query);
-                }
-            }*/
-            generateQuerys = false;
-
             System.out.println("Generando copias para los nodos");
 
 
@@ -89,12 +87,65 @@ public class TCPServer {
             copyFile("blockchaincuentas.txt");
             // Copia cuentas.txt en el directorio Copias
 
-            
 
+            System.out.println("Enviando nodos");
             for (int i = 1; i <= nodeCount; i++) {
-                if(i == 1) connectecNodes[i].sendMessage("Master node-1");
-                else connectecNodes[i].sendMessage("Slave node-" + i);
+                if(i == 1) connectedNodes[i].sendMessage("Master node-1");
+                else connectedNodes[i].sendMessage("Slave node-" + i);
             }
+        }
+
+        if(toMaster){
+            toMaster = false;
+            String[] parts = message.split("-");
+            String query = parts[2];
+            String[] parts2 = query.split(":");
+            String nodeID = parts2[0];
+            String blockHash = parts2[1];
+            String timeExecution = parts2[2];
+            String merkleRoot = parts2[3];
+
+            String fileName = "Archivos/Chain.txt";
+
+            String previousHash = "";
+
+            try {
+                FileReader fr = new FileReader(fileName);
+                BufferedReader br = new BufferedReader(fr);
+                String line;
+                while ((line = br.readLine()) != null) {
+                    String[] parts3 = line.split(":");
+                    String findHashWord = parts3[0];
+                    if (findHashWord.equals("Hash")) {
+                        previousHash = parts3[1];
+                    }
+                }
+                fr.close();
+            } catch (Exception e) {
+                System.out.println("Error: " + e);
+            }
+
+            try {
+                FileWriter fileWriter = new FileWriter(fileName, true);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                System.out.println("Escribiendo en el archivo " + fileName);
+                bufferedWriter.write("Hash:" + blockHash);
+                bufferedWriter.newLine();
+                bufferedWriter.write("+node:"+nodeID);
+                bufferedWriter.newLine();
+                bufferedWriter.write("+previousHash:" + previousHash);
+                bufferedWriter.newLine();
+                bufferedWriter.write("+timestamp:" + timeExecution);
+                bufferedWriter.newLine();
+                bufferedWriter.write("+merkleRoot:" + merkleRoot);
+                bufferedWriter.newLine();
+                bufferedWriter.newLine();
+                bufferedWriter.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
         }
 
         // clientCount = 6;
@@ -280,8 +331,8 @@ public class TCPServer {
                 Socket client = serverSocket.accept();
                 nodeCount++;
                 System.out.println("Clientes totales: " + nodeCount);
-                connectecNodes[nodeCount] = new TCPServerThread(client, this, nodeCount, connectecNodes);
-                connectecNodes[nodeCount].start();
+                connectedNodes[nodeCount] = new TCPServerThread(client, this, nodeCount, connectedNodes);
+                connectedNodes[nodeCount].start();
             }
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -290,7 +341,7 @@ public class TCPServer {
 
     public void stopServer() {
         for (int i = 1; i <= nodeCount; i++) {
-            connectecNodes[i].stopClient();
+            connectedNodes[i].stopClient();
         }
     }
 

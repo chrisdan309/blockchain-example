@@ -16,6 +16,7 @@ class Nodo {
     private TCPNodo tcpNodo;
     public String name;
     public int nodeID;
+    public Block newBlock;
 
     public static void main(String[] args) {
         Nodo client = new Nodo();
@@ -71,7 +72,36 @@ class Nodo {
             System.out.println("Error: " + e);
         }
 
+        newBlock = new Block(previousHash, merkleTreeRoot, 3);
 
+        // Aqui demora
+
+        newBlock.generateHash();
+
+        sendToClient("Recibe-"+nodeID+":"+newBlock.blockHash+":"+newBlock.timeExecution+":"+newBlock.merkleRoot);
+
+
+
+
+        /*
+        String[] parts = input.split("/");nonce
+        String vectorMessage = parts[0];
+        String centroidMessage = parts[1];
+
+        // separar vectorMessage y almacenar en un arreglo de point
+        String[] vectorParts = vectorMessage.split(" ");
+        Point[] points = separarPuntos(vectorParts);
+
+        String[] centroidParts = centroidMessage.split(" ");
+        Point[] centroids = separarPuntos(centroidParts);
+        for (Point point : points) {
+            System.out.println(point);
+        }
+
+        for (Point centroid : centroids) {
+            System.out.println(centroid);
+        }
+        process(points, centroids);*/
 
 
         

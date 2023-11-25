@@ -44,13 +44,14 @@ public class SHA1 {
             if (inputHash.startsWith("0".repeat(difficulty))) {
                 System.out.println("Nonce: " + nonce);
                 System.out.println("Hash: " + inputHash);
+                output[0] = inputHash;
 
-                break;
+                endTime = System.currentTimeMillis();
+                System.out.println("Tiempo: " + (endTime - startTime) + " ms");
+                output[1] = String.valueOf(endTime - startTime);
+                return output;
             }
         }
-        endTime = System.currentTimeMillis();
-        System.out.println("Tiempo: " + (endTime - startTime) + " ms");
-        return null;
     }
 
     public static String findMerkleRoot(List<String> transactions) {
